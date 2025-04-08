@@ -1,13 +1,5 @@
 import { modelFamilies, familyColors } from '../data';
-
-interface ModelSelectorProps {
-  showAllModels: boolean;
-  setShowAllModels: (show: boolean) => void;
-  selectedModels: string[];
-  toggleModel: (model: string) => void;
-  getModelDisplayName: (model: string) => string;
-  sortModelsForButtons: (models: string[]) => string[];
-}
+import { ModelSelectorProps } from '../types';
 
 export function ModelSelector({
   showAllModels,
@@ -15,7 +7,7 @@ export function ModelSelector({
   selectedModels,
   toggleModel,
   getModelDisplayName,
-  sortModelsForButtons,
+  sortModelsByPerformance,
 }: ModelSelectorProps) {
   const getProviderSelectionState = (models: string[]) => {
     const selectedCount = models.filter(model => selectedModels.includes(model)).length;
@@ -57,7 +49,7 @@ export function ModelSelector({
           <p className="text-sm font-medium mb-2 text-gray-700 dark:text-gray-300">Select models to display:</p>
           <div className="flex flex-wrap gap-4">
             {Object.entries(modelFamilies).map(([family, models]) => {
-              const sortedFamilyModels = sortModelsForButtons(models);
+              const sortedFamilyModels = sortModelsByPerformance(models);
               const selectionState = getProviderSelectionState(models);
               
               return (
@@ -96,6 +88,7 @@ export function ModelSelector({
                         key={model}
                         onClick={() => toggleModel(model)}
                         title={model}
+                        aria-pressed={selectedModels.includes(model)}
                         className={`px-2 py-1 text-xs rounded border transition-colors ${
                           selectedModels.includes(model)
                             ? "bg-blue-100 dark:bg-blue-900 border-blue-500 text-blue-800 dark:text-blue-200 font-medium"

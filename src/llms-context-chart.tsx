@@ -1,86 +1,72 @@
-import { useState, useEffect } from "react";
-import { ModelSelector } from "./components/ModelSelector";
-import { PerformanceChart } from "./components/PerformanceChart";
-import { data, modelFamilies, familyColors, topModels } from './data';
+import { useState, useEffect, useCallback, useMemo } from 'react'
+import { ModelSelector } from './components/ModelSelector'
+import { PerformanceChart } from './components/PerformanceChart'
+import { modelFamilies, familyColors, topModels } from './data/metadata'
+import { data } from './data/benchmark'
+import { DataPoint } from './types'
+import { formatWindow, getModelDisplayName, sortModelsByPerformance as sortModels } from './utils/chart-utils'
 
 export default function LLMContextChart() {
-  const [selectedModels, setSelectedModels] = useState([...topModels]);
-  const [showAllModels, setShowAllModels] = useState(false);
-  const [isMobile, setIsMobile] = useState(false);
+  const [selectedModels, setSelectedModels] = useState([...topModels])
+  const [showAllModels, setShowAllModels] = useState(false)
+  const [isMobile, setIsMobile] = useState(false)
 
+  // Check for mobile view
   useEffect(() => {
     const checkMobile = () => {
-      setIsMobile(window.innerWidth < 768);
-    };
+      setIsMobile(window.innerWidth < 768)
+    }
 
-    checkMobile();
-    window.addEventListener('resize', checkMobile);
-    return () => window.removeEventListener('resize', checkMobile);
-  }, []);
+    checkMobile()
+    window.addEventListener('resize', checkMobile)
+    return () => window.removeEventListener('resize', checkMobile)
+  }, [])
 
-  const formatWindow = (window) => {
-    if (window === 0) return "0";
-    if (window < 1000) return window.toString();
-    return `${window / 1000}k`;
-  };
+  // Memoize the last data point to avoid recalculation
+  const lastDataPoint: DataPoint | undefined = useMemo(() => {
+    return data.length > 0 ? data[data.length - 1] : undefined
+  }, [])
 
-  const toggleModel = (model) => {
-    setSelectedModels((prevSelected) =>
-      prevSelected.includes(model)
-        ? prevSelected.filter((m) => m !== model)
-        : [...prevSelected, model]
-    );
-  };
-
-  const getModelDisplayName = (model) => {
-    let name = model.replace(":free", "").replace("-exp", "");
-    name = name.replace("-latest", "");
-    name = name.replace("-thinking", "(thinking)");
-    if (name === "gemini-2.5-pro-03-25") return "gemini-2.5-pro-03-25";
-    if (name === "gemini-2.0-flash(thinking)") return "gemini-2.0-flash(thinking)";
-    if (name === "gemini-2.0-pro-02-05") return "gemini-2.0-pro-02-05";
-    if (name === "chatgpt-4o") return "chatgpt-4o";
-    return name;
-  };
-
-  const getModelColor = (model) => {
+  // Memoize the model color function
+  const getModelColor = useCallback((model: string) => {
+    type Family = keyof typeof familyColors;
     for (const [family, models] of Object.entries(modelFamilies)) {
       if (models.includes(model)) {
-        return familyColors[family];
+        return familyColors[family as Family];
       }
     }
-    return "#888888";
-  };
+    return '#888888'
+  }, [])
 
-  const lastDataPoint = data.length > 0 ? data[data.length - 1] : {};
+  // Memoize the sorting function that uses the last data point
+  const sortModelsByPerformance = useCallback((modelsToSort: string[]) => {
+    return sortModels(modelsToSort, lastDataPoint)
+  }, [lastDataPoint])
 
-  const sortModelsByPerformance = (modelsToSort) => {
-    return [...modelsToSort].sort((a, b) => {
-      const aValue = lastDataPoint[a] === null || lastDataPoint[a] === undefined ? -1 : lastDataPoint[a];
-      const bValue = lastDataPoint[b] === null || lastDataPoint[b] === undefined ? -1 : lastDataPoint[b];
-      if (aValue === -1 && bValue === -1) return 0;
-      if (aValue === -1) return 1;
-      if (bValue === -1) return -1;
-      return bValue - aValue;
-    });
-  };
+  // Memoize the toggle model function
+  const toggleModel = useCallback((model: string) => {
+    setSelectedModels((prevSelected) =>
+      prevSelected.includes(model) ? prevSelected.filter((m) => m !== model) : [...prevSelected, model]
+    )
+  }, [])
 
-  const sortModelsForButtons = (modelsToSort) => {
-    return [...modelsToSort].sort((a, b) => {
-      const aValue = lastDataPoint[a] === null || lastDataPoint[a] === undefined ? -1 : lastDataPoint[a];
-      const bValue = lastDataPoint[b] === null || lastDataPoint[b] === undefined ? -1 : lastDataPoint[b];
-      if (aValue === -1 && bValue === -1) return 0;
-      if (aValue === -1) return 1;
-      if (bValue === -1) return -1;
-      return bValue - aValue;
-    });
-  };
+  // Handle error states
+  const hasData = data && data.length > 0;
+  const hasSelectedModels = selectedModels && selectedModels.length > 0;
 
   return (
-    <div className="w-full p-4 bg-white dark:bg-gray-800 rounded-lg shadow-md transition-colors duration-200">
+    <div
+      className="w-full p-4 bg-white dark:bg-gray-800 rounded-lg shadow-md transition-colors duration-200"
+      role="region"
+      aria-label="LLMs Long Context Benchmark"
+    >
       <h1 className="text-2xl font-bold mb-1 dark:text-white">LLMs Long Context Benchmark</h1>
-      <h2 className="text-lg font-semibold mb-2 dark:text-gray-200">Fiction.LiveBench for Long Context Deep Comprehension</h2>
-      <p className="mb-4 text-sm text-gray-600 dark:text-gray-400">Accuracy (%) across different context window sizes</p>
+      <h2 className="text-lg font-semibold mb-2 dark:text-gray-200">
+        Fiction.LiveBench for Long Context Deep Comprehension
+      </h2>
+      <p className="mb-4 text-sm text-gray-600 dark:text-gray-400">
+        Accuracy (%) across different context window sizes
+      </p>
 
       <ModelSelector
         showAllModels={showAllModels}
@@ -88,28 +74,45 @@ export default function LLMContextChart() {
         selectedModels={selectedModels}
         toggleModel={toggleModel}
         getModelDisplayName={getModelDisplayName}
-        sortModelsForButtons={sortModelsForButtons}
-      />
-
-      <PerformanceChart
-        isMobile={isMobile}
-        showAllModels={showAllModels}
-        selectedModels={selectedModels}
-        getModelDisplayName={getModelDisplayName}
-        getModelColor={getModelColor}
-        formatWindow={formatWindow}
         sortModelsByPerformance={sortModelsByPerformance}
       />
 
+      {(!hasData || !hasSelectedModels) && (
+        <div className="py-8 text-center text-gray-500 dark:text-gray-400">
+          {!hasData ?
+            "No benchmark data available." :
+            "Please select at least one model to display."
+          }
+        </div>
+      )}
+
+      {hasData && hasSelectedModels && (
+        <PerformanceChart
+          isMobile={isMobile}
+          showAllModels={showAllModels}
+          selectedModels={selectedModels}
+          getModelDisplayName={getModelDisplayName}
+          getModelColor={getModelColor}
+          formatWindow={formatWindow}
+          sortModelsByPerformance={sortModelsByPerformance}
+        />
+      )}
+
       <div className="mt-4 text-xs text-gray-500 dark:text-gray-400">
-        <p>Data source: <a
+        <p>
+          Data source:{' '}
+          <a
             href="https://fiction.live/stories/Fiction-liveBench-April-6-2025/oQdzQvKHw8JyXbN87"
             target="_blank"
             rel="noopener noreferrer"
             className="text-blue-500 hover:underline dark:text-blue-400"
-          >Fiction.LiveBench</a> for Long Context Deep Comprehension (April 6, 2025)</p>
+          >
+            Fiction.LiveBench
+          </a>{' '}
+          for Long Context Deep Comprehension (April 6, 2025)
+        </p>
         <p className="mt-1">
-          Made by{" "}
+          Made by{' '}
           <a
             href="https://x.com/leodoan_"
             target="_blank"
@@ -121,5 +124,5 @@ export default function LLMContextChart() {
         </p>
       </div>
     </div>
-  );
+  )
 }

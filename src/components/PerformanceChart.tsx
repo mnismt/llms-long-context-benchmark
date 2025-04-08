@@ -2,16 +2,7 @@ import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, Responsi
 import { ChartTooltip } from "./ChartTooltip";
 import { ChartLegend } from "./ChartLegend";
 import { data, modelFamilies, topModels } from '../data';
-
-interface PerformanceChartProps {
-  isMobile: boolean;
-  showAllModels: boolean;
-  selectedModels: string[];
-  getModelDisplayName: (model: string) => string;
-  getModelColor: (model: string) => string;
-  formatWindow: (window: number) => string;
-  sortModelsByPerformance: (models: string[]) => string[];
-}
+import { PerformanceChartProps } from '../types';
 
 export function PerformanceChart({
   isMobile,
@@ -26,7 +17,11 @@ export function PerformanceChart({
 
   return (
     <div className="flex flex-col w-full">
-      <div className={`w-full ${isMobile ? 'h-[40vh]' : 'h-96'}`}>
+      <div
+        className={`w-full ${isMobile ? 'h-[40vh]' : 'h-96'}`}
+        aria-label="Chart showing LLM performance across different context window sizes"
+        role="figure"
+      >
         <ResponsiveContainer width="100%" height="100%">
           <LineChart 
             data={data} 

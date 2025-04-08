@@ -1,13 +1,4 @@
-interface ChartLegendProps {
-  payload: any[];
-  isMobile: boolean;
-  showAllModels: boolean;
-  selectedModels: string[];
-  getModelDisplayName: (model: string) => string;
-  getModelColor: (model: string) => string;
-  sortModelsByPerformance: (models: string[]) => string[];
-  topModels: string[];
-}
+import { ChartLegendProps } from '../types';
 
 export function ChartLegend({
   payload,

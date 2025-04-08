@@ -1,10 +1,4 @@
-interface ChartTooltipProps {
-  active?: boolean;
-  payload?: any[];
-  label?: string;
-  getModelDisplayName: (model: string) => string;
-  formatWindow: (window: number) => string;
-}
+import { ChartTooltipProps } from '../types';
 
 export function ChartTooltip({
   active,

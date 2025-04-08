@@ -24,8 +24,9 @@ export default function Home() {
         <div className="flex justify-end mb-4">
           <button
             onClick={toggleTheme}
-            className="p-2 rounded-lg bg-white dark:bg-gray-800 shadow-md hover:shadow-lg transition-shadow"
-            aria-label="Toggle theme"
+            className="p-2 rounded-lg bg-white dark:bg-gray-800 shadow-md hover:shadow-lg transition-shadow focus:outline-none focus:ring-2 focus:ring-blue-500"
+            aria-label={isDark ? "Switch to light theme" : "Switch to dark theme"}
+            title={isDark ? "Switch to light theme" : "Switch to dark theme"}
           >
             {isDark ? (
               <Sun className="w-5 h-5 text-yellow-500" />
