@@ -14,17 +14,22 @@ export function ChartTooltip({
       return b.value - a.value;
     });
 
+    const contextLabel = (typeof label === 'number') ? `Context: ${formatWindow(label)}` : 'Context: N/A';
+
     return (
       <div className="bg-white dark:bg-gray-800 p-2 border border-gray-300 dark:border-gray-600 shadow-md rounded text-xs">
-        <p className="font-bold mb-1 dark:text-white">{`Context: ${formatWindow(label)}`}</p>
-        {sortedPayload.map((entry, index) => (
+        <p className="font-bold mb-1 dark:text-white">{contextLabel}</p>
+        {sortedPayload.map((entry, index) => {
+          const color = entry.color || '#888888'; // Default color
+          const displayName = entry.name ? getModelDisplayName(entry.name) : 'Unknown'; // Default name
+          return (
           <div key={`item-${index}`} className="flex items-center mb-1">
-            <div className="w-3 h-3 mr-2 flex-shrink-0" style={{ backgroundColor: entry.color }} />
-            <span style={{ color: entry.color }}>
-              {getModelDisplayName(entry.name)}: {entry.value !== null && entry.value !== undefined ? `${entry.value.toFixed(1)}%` : "N/A"}
+            <div className="w-3 h-3 mr-2 flex-shrink-0" style={{ backgroundColor: color }} />
+            <span style={{ color: color }}>
+              {displayName}: {entry.value !== null && entry.value !== undefined ? `${entry.value.toFixed(1)}%` : "N/A"}
             </span>
           </div>
-        ))}
+        )})}
       </div>
     );
   }

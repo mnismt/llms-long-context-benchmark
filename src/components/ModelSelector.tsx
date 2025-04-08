@@ -3,7 +3,7 @@ import { ModelSelectorProps } from '../types';
 import { ProviderIcon } from './ProviderIcons';
 
 // Define a type for the family keys
-type FamilyName = keyof typeof familyColors;
+type FamilyName = keyof typeof modelFamilies;
 
 export function ModelSelector({
   showAllModels,
@@ -12,6 +12,8 @@ export function ModelSelector({
   toggleModel,
   getModelDisplayName,
   sortModelsByPerformance,
+  hoveredFamily,
+  setHoveredFamily,
 }: ModelSelectorProps) {
   const getProviderSelectionState = (models: string[]) => {
     const selectedCount = models.filter(model => selectedModels.includes(model)).length;
@@ -62,8 +64,11 @@ export function ModelSelector({
                   className={`border rounded p-2 bg-gray-50 dark:bg-gray-700 dark:border-gray-600 transition-colors cursor-pointer
                     ${selectionState === 'all' ? 'ring-2 ring-blue-500' : ''}
                     ${selectionState === 'partial' ? 'ring-2 ring-blue-300' : ''}
+                    ${hoveredFamily === family ? 'bg-gray-100 dark:bg-gray-600' : ''}
                     hover:bg-gray-100 dark:hover:bg-gray-600`}
                   onClick={() => toggleProvider(models)}
+                  onMouseEnter={() => setHoveredFamily(family)}
+                  onMouseLeave={() => setHoveredFamily(null)}
                 >
                   <div className="flex items-center gap-1 mb-1">
                     <div 

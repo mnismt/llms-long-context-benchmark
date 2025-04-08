@@ -1,9 +1,11 @@
+import { useState } from 'react';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts'
 import { ChartTooltip } from './ChartTooltip'
 import { ChartLegend } from './ChartLegend'
 import { modelFamilies, topModels } from '../data/metadata'
-import { PerformanceChartProps } from '../types'
+import { LegendPayloadItem, PerformanceChartProps, TooltipPayloadItem } from '../types'
 import { data } from '../data/benchmark'
+import { getModelFamily } from '../utils/chart-utils'
 
 export function PerformanceChart({
   isMobile,
@@ -13,8 +15,20 @@ export function PerformanceChart({
   getModelColor,
   formatWindow,
   sortModelsByPerformance,
+  hoveredFamily,
 }: PerformanceChartProps) {
+  const [hoveredLegendItem, setHoveredLegendItem] = useState<string | null>(null);
   const modelsToRenderLines = showAllModels ? Object.values(modelFamilies).flat() : selectedModels
+
+  const isModelHighlighted = (model: string): boolean => {
+    if (hoveredFamily) {
+      return getModelFamily(model) === hoveredFamily;
+    }
+    if (hoveredLegendItem) {
+      return model === hoveredLegendItem;
+    }
+    return true; // Highlight if nothing is specifically hovered
+  };
 
   return (
     <div className="flex flex-col w-full">
@@ -52,7 +66,7 @@ export function PerformanceChart({
               content={({ active, payload, label }) => (
                 <ChartTooltip
                   active={active}
-                  payload={payload}
+                  payload={payload as unknown as TooltipPayloadItem[]}
                   label={label}
                   getModelDisplayName={getModelDisplayName}
                   formatWindow={formatWindow}
@@ -72,6 +86,10 @@ export function PerformanceChart({
                     getModelColor={getModelColor}
                     sortModelsByPerformance={sortModelsByPerformance}
                     topModels={topModels}
+                    hoveredLegendItem={hoveredLegendItem}
+                    setHoveredLegendItem={setHoveredLegendItem}
+                    hoveredFamily={hoveredFamily}
+                    getModelFamily={getModelFamily}
                   />
                 )}
                 layout="vertical"
@@ -97,6 +115,7 @@ export function PerformanceChart({
                 name={model}
                 stroke={getModelColor(model)}
                 strokeWidth={selectedModels.includes(model) ? 2.5 : 1.5}
+                strokeOpacity={isModelHighlighted(model) ? 1 : 0.3}
                 dot={{ r: selectedModels.includes(model) ? 4 : 3, strokeWidth: 1, fill: getModelColor(model) }}
                 activeDot={{ r: 5 }}
                 connectNulls={true}
@@ -120,6 +139,10 @@ export function PerformanceChart({
             getModelColor={getModelColor}
             sortModelsByPerformance={sortModelsByPerformance}
             topModels={topModels}
+            hoveredLegendItem={hoveredLegendItem}
+            setHoveredLegendItem={setHoveredLegendItem}
+            hoveredFamily={hoveredFamily}
+            getModelFamily={getModelFamily}
           />
         </div>
       )}

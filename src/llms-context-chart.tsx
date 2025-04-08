@@ -11,6 +11,7 @@ export default function LLMContextChart() {
   const [selectedModels, setSelectedModels] = useState([...topModels])
   const [showAllModels, setShowAllModels] = useState(false)
   const [isMobile, setIsMobile] = useState(false)
+  const [hoveredFamily, setHoveredFamily] = useState<string | null>(null)
 
   // Check for mobile view
   useEffect(() => {
@@ -76,6 +77,8 @@ export default function LLMContextChart() {
         toggleModel={toggleModel}
         getModelDisplayName={getModelDisplayName}
         sortModelsByPerformance={sortModelsByPerformance}
+        hoveredFamily={hoveredFamily}
+        setHoveredFamily={setHoveredFamily}
       />
 
       {(!hasData || !hasSelectedModels) && (
@@ -97,6 +100,7 @@ export default function LLMContextChart() {
             getModelColor={getModelColor}
             formatWindow={formatWindow}
             sortModelsByPerformance={sortModelsByPerformance}
+            hoveredFamily={hoveredFamily}
           />
           <HeatmapTable
             data={data}
@@ -130,6 +134,17 @@ export default function LLMContextChart() {
             className="text-blue-500 hover:underline dark:text-blue-400"
           >
             @leodoan_
+          </a>
+        </p>
+        <p className="mt-1">
+          Source code on{' '}
+          <a
+            href="https://github.com/mnismt/llms-long-context-benchmark"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-blue-500 hover:underline dark:text-blue-400"
+          >
+            GitHub
           </a>
         </p>
       </div>
