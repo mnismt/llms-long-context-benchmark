@@ -10,7 +10,7 @@ This project visualizes benchmark results from Fiction.LiveBench to compare how 
 
 ## Data Source
 
-All data comes from Fiction.LiveBench for Long Context Deep Comprehension (April 6, 2025). The benchmark data is located in `src/data/benchmark.ts`.
+All data comes from [Fiction.LiveBench](https://fiction.live/stories/Fiction-liveBench-April-6-2025/oQdzQvKHw8JyXbN87) for Long Context Deep Comprehension (April 6, 2025). The benchmark data is located in `src/data/benchmark.ts`.
 
 Fiction.LiveBench is a benchmark specifically designed to measure LLMs' deep comprehension abilities across long contexts. Unlike many other benchmarks that test retrieval or basic understanding, Fiction.LiveBench evaluates how well models can:
 
