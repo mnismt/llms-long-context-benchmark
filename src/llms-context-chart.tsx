@@ -1,10 +1,11 @@
 import { useState, useEffect, useCallback, useMemo } from 'react'
 import { ModelSelector } from './components/ModelSelector'
 import { PerformanceChart } from './components/PerformanceChart'
+import { HeatmapTable } from './components/HeatmapTable'
 import { modelFamilies, familyColors, topModels } from './data/metadata'
 import { data } from './data/benchmark'
 import { DataPoint } from './types'
-import { formatWindow, getModelDisplayName, sortModelsByPerformance as sortModels } from './utils/chart-utils'
+import { formatWindow, getModelDisplayName, sortModelsByPerformance as sortModels, getModelFamily } from './utils/chart-utils'
 
 export default function LLMContextChart() {
   const [selectedModels, setSelectedModels] = useState([...topModels])
@@ -87,15 +88,24 @@ export default function LLMContextChart() {
       )}
 
       {hasData && hasSelectedModels && (
-        <PerformanceChart
-          isMobile={isMobile}
-          showAllModels={showAllModels}
-          selectedModels={selectedModels}
-          getModelDisplayName={getModelDisplayName}
-          getModelColor={getModelColor}
-          formatWindow={formatWindow}
-          sortModelsByPerformance={sortModelsByPerformance}
-        />
+        <>
+          <PerformanceChart
+            isMobile={isMobile}
+            showAllModels={showAllModels}
+            selectedModels={selectedModels}
+            getModelDisplayName={getModelDisplayName}
+            getModelColor={getModelColor}
+            formatWindow={formatWindow}
+            sortModelsByPerformance={sortModelsByPerformance}
+          />
+          <HeatmapTable
+            data={data}
+            modelsToDisplay={sortModelsByPerformance(showAllModels ? Object.values(modelFamilies).flat() : selectedModels)}
+            getModelDisplayName={getModelDisplayName}
+            formatWindow={formatWindow}
+            getModelFamily={getModelFamily}
+          />
+        </>
       )}
 
       <div className="mt-4 text-xs text-gray-500 dark:text-gray-400">

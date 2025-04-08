@@ -1,8 +1,9 @@
-import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from "recharts";
-import { ChartTooltip } from "./ChartTooltip";
-import { ChartLegend } from "./ChartLegend";
-import { data, modelFamilies, topModels } from '../data';
-import { PerformanceChartProps } from '../types';
+import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts'
+import { ChartTooltip } from './ChartTooltip'
+import { ChartLegend } from './ChartLegend'
+import { modelFamilies, topModels } from '../data/metadata'
+import { PerformanceChartProps } from '../types'
+import { data } from '../data/benchmark'
 
 export function PerformanceChart({
   isMobile,
@@ -13,7 +14,7 @@ export function PerformanceChart({
   formatWindow,
   sortModelsByPerformance,
 }: PerformanceChartProps) {
-  const modelsToRenderLines = showAllModels ? Object.values(modelFamilies).flat() : selectedModels;
+  const modelsToRenderLines = showAllModels ? Object.values(modelFamilies).flat() : selectedModels
 
   return (
     <div className="flex flex-col w-full">
@@ -23,30 +24,29 @@ export function PerformanceChart({
         role="figure"
       >
         <ResponsiveContainer width="100%" height="100%">
-          <LineChart 
-            data={data} 
-            margin={isMobile ? 
-              { top: 5, right: 20, left: 20, bottom: 5 } : 
-              { top: 5, right: 120, left: 20, bottom: 25 }
+          <LineChart
+            data={data}
+            margin={
+              isMobile ? { top: 5, right: 20, left: 20, bottom: 5 } : { top: 5, right: 120, left: 20, bottom: 25 }
             }
           >
             <CartesianGrid strokeDasharray="3 3" stroke="#374151" opacity={0.1} />
             <XAxis
               dataKey="window"
               tickFormatter={formatWindow}
-              label={isMobile ? undefined : { value: "Context Window Size", position: "insideBottom", offset: -15 }}
+              label={isMobile ? undefined : { value: 'Context Window Size', position: 'insideBottom', offset: -15 }}
               tick={{ fontSize: 12 }}
               stroke="#9CA3AF"
-              axisLine={{ stroke: "#4B5563" }}
-              tickLine={{ stroke: "#4B5563" }}
+              axisLine={{ stroke: '#4B5563' }}
+              tickLine={{ stroke: '#4B5563' }}
             />
             <YAxis
               domain={[0, 100]}
-              label={isMobile ? undefined : { value: "Accuracy (%)", angle: -90, position: "insideLeft", offset: -5 }}
+              label={isMobile ? undefined : { value: 'Accuracy (%)', angle: -90, position: 'insideLeft', offset: -5 }}
               tick={{ fontSize: 12 }}
               stroke="#9CA3AF"
-              axisLine={{ stroke: "#4B5563" }}
-              tickLine={{ stroke: "#4B5563" }}
+              axisLine={{ stroke: '#4B5563' }}
+              tickLine={{ stroke: '#4B5563' }}
             />
             <Tooltip
               content={({ active, payload, label }) => (
@@ -109,9 +109,9 @@ export function PerformanceChart({
       {isMobile && (
         <div className="mt-4 px-2">
           <ChartLegend
-            payload={modelsToRenderLines.map(model => ({
+            payload={modelsToRenderLines.map((model) => ({
               dataKey: model,
-              color: getModelColor(model)
+              color: getModelColor(model),
             }))}
             isMobile={isMobile}
             showAllModels={showAllModels}
@@ -124,5 +124,5 @@ export function PerformanceChart({
         </div>
       )}
     </div>
-  );
+  )
 }

@@ -1,5 +1,9 @@
-import { modelFamilies, familyColors } from '../data';
+import { modelFamilies, familyColors } from '../data/metadata';
 import { ModelSelectorProps } from '../types';
+import { ProviderIcon } from './ProviderIcons';
+
+// Define a type for the family keys
+type FamilyName = keyof typeof familyColors;
 
 export function ModelSelector({
   showAllModels,
@@ -48,7 +52,7 @@ export function ModelSelector({
         <div className="mt-2 border rounded p-3 dark:border-gray-700">
           <p className="text-sm font-medium mb-2 text-gray-700 dark:text-gray-300">Select models to display:</p>
           <div className="flex flex-wrap gap-4">
-            {Object.entries(modelFamilies).map(([family, models]) => {
+            {(Object.entries(modelFamilies) as [FamilyName, string[]][]).map(([family, models]) => {
               const sortedFamilyModels = sortModelsByPerformance(models);
               const selectionState = getProviderSelectionState(models);
               
@@ -61,7 +65,7 @@ export function ModelSelector({
                     hover:bg-gray-100 dark:hover:bg-gray-600`}
                   onClick={() => toggleProvider(models)}
                 >
-                  <div className="flex items-center gap-2 mb-1">
+                  <div className="flex items-center gap-1 mb-1">
                     <div 
                       className="w-4 h-4 rounded border flex items-center justify-center transition-colors"
                       style={{ 
@@ -78,6 +82,7 @@ export function ModelSelector({
                         <div className="w-2 h-2 bg-current" style={{ color: familyColors[family] }}></div>
                       )}
                     </div>
+                    <ProviderIcon providerName={family} className="w-4 h-4 inline-block ml-1" />
                     <div className="font-bold" style={{ color: familyColors[family] }}>
                       {family}
                     </div>

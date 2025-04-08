@@ -24,7 +24,7 @@ export const familyColors = {
   Anthropic: "#D97757",
   OpenAI: "#21AC85",
   Google: "#EB493D",
-  DeepSeek: "#7E80FB",
+  DeepSeek: "#4C6BFE",
   Meta: "#007CF2",
   Qwen: "#634CEC",
   Other: "#888888",

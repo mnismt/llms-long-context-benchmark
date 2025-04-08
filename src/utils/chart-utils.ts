@@ -1,4 +1,5 @@
 import { DataPoint } from '../types'
+import { modelFamilies } from '../data/metadata'
 
 /**
  * Formats a context window size number into a readable string
@@ -46,4 +47,16 @@ export const sortModelsByPerformance = (
     
     return bValue - aValue // Higher scores first
   })
+}
+
+/**
+ * Function to get the family (provider) of a model
+ */
+export function getModelFamily(model: string): string {
+  for (const [family, models] of Object.entries(modelFamilies)) {
+    if (models.includes(model)) {
+      return family;
+    }
+  }
+  return 'Other'; // Default or fallback family name
 }
