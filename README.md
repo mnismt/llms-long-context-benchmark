@@ -1,6 +1,8 @@
-# LLMs Long Context Benchmark
+# LLMs Long Context Benchmark Visualization
 
-A visualization tool for comparing the performance of various LLMs across different context window sizes based on the Fiction.LiveBench benchmark.
+A visualization website for comparing the performance of various LLMs across different context window sizes based on the Fiction.LiveBench benchmark.
+
+![LLMs Long Context Benchmark](https://github.com/user-attachments/assets/07cbe37e-83d8-4cba-a03d-d3f7d6d7a024)
 
 ## Project Overview
 
@@ -17,6 +19,7 @@ Fiction.LiveBench is a benchmark specifically designed to measure LLMs' deep com
 - Accurately answer questions that require deep comprehension of the entire context
 
 The benchmark presents models with increasingly longer fictional texts and measures their ability to accurately answer detailed questions about the content.
+
 ## Implementation
 
 This project is built with:
