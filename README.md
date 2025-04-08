@@ -4,10 +4,6 @@ A visualization website for comparing the performance of various LLMs across dif
 
 ![LLMs Long Context Benchmark](https://github.com/user-attachments/assets/07cbe37e-83d8-4cba-a03d-d3f7d6d7a024)
 
-## Project Overview
-
-This project visualizes benchmark results from Fiction.LiveBench to compare how well different LLMs maintain accuracy as context window size increases. The visualization shows performance metrics for leading models from Anthropic, OpenAI, Google, DeepSeek, Meta, Qwen, and other providers.
-
 ## Data Source
 
 All data comes from [Fiction.LiveBench](https://fiction.live/stories/Fiction-liveBench-April-6-2025/oQdzQvKHw8JyXbN87) for Long Context Deep Comprehension (April 6, 2025). The benchmark data is located in `src/data/benchmark.ts`.
@@ -19,14 +15,6 @@ Fiction.LiveBench is a benchmark specifically designed to measure LLMs' deep com
 - Accurately answer questions that require deep comprehension of the entire context
 
 The benchmark presents models with increasingly longer fictional texts and measures their ability to accurately answer detailed questions about the content.
-
-## Implementation
-
-This project is built with:
-- React
-- TypeScript
-- Recharts for data visualization
-- Tailwind CSS for styling
 
 ## Development
 
