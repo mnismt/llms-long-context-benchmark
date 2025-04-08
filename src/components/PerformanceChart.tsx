@@ -1,9 +1,9 @@
-import { useState } from 'react';
+import { useState } from 'react'
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts'
 import { ChartTooltip } from './ChartTooltip'
 import { ChartLegend } from './ChartLegend'
 import { modelFamilies, topModels } from '../data/metadata'
-import { LegendPayloadItem, PerformanceChartProps, TooltipPayloadItem } from '../types'
+import { PerformanceChartProps, TooltipPayloadItem } from '../types'
 import { data } from '../data/benchmark'
 import { getModelFamily } from '../utils/chart-utils'
 
@@ -17,18 +17,18 @@ export function PerformanceChart({
   sortModelsByPerformance,
   hoveredFamily,
 }: PerformanceChartProps) {
-  const [hoveredLegendItem, setHoveredLegendItem] = useState<string | null>(null);
+  const [hoveredLegendItem, setHoveredLegendItem] = useState<string | null>(null)
   const modelsToRenderLines = showAllModels ? Object.values(modelFamilies).flat() : selectedModels
 
   const isModelHighlighted = (model: string): boolean => {
     if (hoveredFamily) {
-      return getModelFamily(model) === hoveredFamily;
+      return getModelFamily(model) === hoveredFamily
     }
     if (hoveredLegendItem) {
-      return model === hoveredLegendItem;
+      return model === hoveredLegendItem
     }
-    return true; // Highlight if nothing is specifically hovered
-  };
+    return true // Highlight if nothing is specifically hovered
+  }
 
   return (
     <div className="flex flex-col w-full">
