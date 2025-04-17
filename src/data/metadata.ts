@@ -2,7 +2,7 @@
 // Model families and their colors
 export const modelFamilies = {
   Anthropic: ["claude-3-7-sonnet-20250219-thinking", "claude-3-7-sonnet-20250219", "claude-3-5-sonnet-20241022"],
-  OpenAI: ["o1", "o3-mini", "gpt-4.5-preview", "chatgpt-4o-latest"],
+  OpenAI: ["o1", "o3", "o4-mini", "o3-mini", "gpt-4.5-preview", "chatgpt-4o-latest", "gpt-4.1", "gpt-4.1-mini", "gpt-4.1-nano",],
   Google: [
     "gemini-2.5-pro-exp-03-25:free",
     "gemini-2.0-flash-thinking-exp:free",
@@ -18,6 +18,7 @@ export const modelFamilies = {
     "dolphin3.0-r1-mistral-24b:free",
     "quasar-alpha",
   ],
+  "Grok-3": ["grok-3-mini-beta", "grok-3-beta"],
 };
 
 export const familyColors = {
@@ -27,6 +28,7 @@ export const familyColors = {
   DeepSeek: "#4C6BFE",
   Meta: "#007CF2",
   Qwen: "#634CEC",
+  "Grok-3": "#007CF2",
   Other: "#888888",
 };
 
