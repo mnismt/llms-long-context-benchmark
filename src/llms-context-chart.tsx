@@ -116,14 +116,14 @@ export default function LLMContextChart() {
         <p>
           Data source:{' '}
           <a
-            href="https://fiction.live/stories/Fiction-liveBench-April-6-2025/oQdzQvKHw8JyXbN87"
+            href="https://fiction.live/stories/Fiction-liveBench-April-14-2025/oQdzQvKHw8JyXbN87"
             target="_blank"
             rel="noopener noreferrer"
             className="text-blue-500 hover:underline dark:text-blue-400"
           >
             Fiction.LiveBench
           </a>{' '}
-          for Long Context Deep Comprehension (April 6, 2025)
+          for Long Context Deep Comprehension (April 14, 2025)
         </p>
         <p className="mt-1">
           Made by{' '}
